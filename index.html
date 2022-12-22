@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <title>Public-key-crypto-js</title>
+
+    <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+
+    <script src="bower_components/angular/angular.js"></script>
+
+    <script src="app/public-key-crypto-js/global.js"></script>
+    <script src="app/public-key-crypto-js/app.js"></script>
+    <script src="app/public-key-crypto-js/values/PrimeNumbers.js"></script>
+    <script src="app/public-key-crypto-js/services/ExtendedEuclid.js"></script>
+    <script src="app/public-key-crypto-js/services/PowerModulo.js"></script>
+    <script src="app/public-key-crypto-js/services/GeneratePrimitiveNumber.js"></script>
+    <script src="app/public-key-crypto-js/controllers/AlgorithmController.js"></script>
+
+</head>
+<body ng-app="public-key-crypto-js" ng-controller="AlgorithmController" class="container">
+
+<h1>Thuật toán Euclid mở rộng</h1>
+
+<form class="row">
+    <div class="col-md-8 col-sm-10 col-xs-12">
+        <div class="form-group">
+            <label for="a">Nhập số nguyên a</label>
+            <input ng-model="a" type="number" class="form-control" id="a" placeholder="a?">
+        </div>
+        <div class="form-group">
+            <label for="b">Nhập số nguyên b</label>
+            <input ng-model="b" type="number" class="form-control" id="b" placeholder="b?">
+        </div>
+        <p>Ước chung lớn nhất: gcd(a, b) = <code>{{gcd(a, b)}}</code></p>
+
+        <p>Và: egcd(a, b) = {{egcd(a, b)}}; </p>
+
+        <p ng-if="a > b">Hay số nghịch đảo: {{b}} ^-1 mod {{a}} = <code>{{egcd(a, b)}} mod {{a}}</code></p>
+
+        <p ng-if="a <= b">Hay số nghịch đảo: {{a}} ^-1 mod {{b}} = <code>{{egcd(a, b)}} mod {{b}}</code></p>
+    </div>
+</form>
+
+
+<h1>Thuật toán nhân và bình phương</h1>
+
+<form class="row"> <!--ng-init="x=0; n=0; m=0;"-->
+    <div class="col-md-8 col-sm-10 col-xs-12">
+        <div class="form-group form-group-sm">
+            <label for="x">Nhập số nguyên x</label>
+            <input ng-model="x" type="number" class="form-control" id="x" placeholder="x?">
+        </div>
+        <div class="form-group form-group-sm">
+            <label for="n">Nhập số mũ n</label>
+            <input ng-model="n" type="number" class="form-control" id="n" placeholder="n?">
+        </div>
+        <div class="form-group form-group-sm">
+            <label for="m">Nhập modulo m</label>
+            <input ng-model="m" type="number" class="form-control" id="m" placeholder="m?">
+        </div>
+        <p>y = x ^ n mod m = {{x}} ^ {{n}} mod {{m}} = <code>{{powmod(x, n, m)}} mod {{m}};</code></p>
+    </div>
+</form>
+
+<h1></h1>
+
+<h1>Tìm phần tử nguyên thủy</h1>
+
+
+<form class="row">
+    <div class="col-md-8 col-sm-10 col-xs-12">
+        <div class="form-group form-group-sm">
+            <label for="p">Nhập số nguyên tố p</label>
+            <input ng-model="p" type="number" class="form-control" id="p" placeholder="p?">
+        </div>
+
+        <p>Số nguyên tố: p = <code>{{p || "?"}}</code></p>
+
+        <p ng-if="p">p - 1 = <code>{{p - 1}}</code></p>
+
+        <p ng-if="!isPrime(p)" style="color: red;">P không là số nguyên tố! Hãy nhập số khác, ví dụ: {{suggest}}</p>
+
+        <div ng-if="isPrime(p)">
+            <p>Tìm được phần tử sinh: alpha = <code>{{alpha = primitiveNumber(p)}}</code></p>
+
+            <p>Tập ước số nguyên tố của U_prime(p - 1) = U_prime({{p - 1}}) = <code>&#123; {{uprime &&
+                uprime.join(',')}}
+                &#125;</code></p>
+        </div>
+    </div>
+</form>
+
+
+</body>
+</html>
